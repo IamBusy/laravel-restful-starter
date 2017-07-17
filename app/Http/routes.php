@@ -11,6 +11,36 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+$api = app('Dingo\Api\Routing\Router');
+
+
+$api->version('v1', ['namespace'=>'App\Http\Controllers'], function ($api) {
+
+
+    // This group limit visiting rate without authentication
+    $api->group([
+        'middleware' => 'api.throttle',
+        'limit'      => config('api.rate_limit.default.limit'),
+        'expires'    => config('api.rate_limit.default.expires'),
+    ],function ($api) {
+
+
+    });
+
+
+    // This group can be visited only by those who has been authenticated
+    $api->group(['middleware' => 'api.auth'], function ($api) {
+
+        // Limit visiting rate
+        $api->group([
+            'middleware' => 'api.throttle',
+            'limit'      => config('api.rate_limit.default.limit'),
+            'expires'    => config('api.rate_limit.default.expires'),
+        ],function ($api) {
+
+        });
+
+    });
+
 });
+
