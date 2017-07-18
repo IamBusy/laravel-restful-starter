@@ -18,6 +18,10 @@
 | loading any of our classes later on. It feels nice to relax.
 |
 */
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Authorization, If-Modified-Since");
+header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+
 
 require __DIR__.'/../bootstrap/autoload.php';
 
